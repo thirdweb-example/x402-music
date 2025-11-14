@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import WalletConnect from '@/components/WalletConnect';
 import { getApiUrl } from '@/lib/api';
+import { useActiveWallet } from 'thirdweb/react';
 
 interface Track {
   trackId: string;
@@ -20,6 +21,7 @@ export default function Home() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
   const tracksPerPage = 9; // 3x3 grid
+  const wallet = useActiveWallet();
 
   useEffect(() => {
     fetchTracks();
@@ -116,6 +118,11 @@ export default function Home() {
               <div className="text-center py-20">
                 <p className="text-white/40 text-lg mb-1">No tracks available yet.</p>
                 <p className="text-white/20 text-sm">Be the first to upload!</p>
+              </div>
+            ) : !wallet ? (
+              <div className="text-center py-20">
+                <p className="text-white/60 text-lg mb-4">Connect your wallet to view and play tracks</p>
+                <p className="text-white/40 text-sm">Please connect your wallet using the button above to access the music player.</p>
               </div>
             ) : (
               <>
